@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+    <changeSet id="20200607" author="jsq">
+        <createTable tableName="tb_user" remarks="用户表">
+            <column name="id" type="bigint">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_Id"/>
+            </column>
+            <column name="username" type="varchar(20)" remarks="用户名">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(20)" remarks="密码">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="tb_department" remarks="商品表">
+            <column name="id" type="bigint">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_Id"/>
+            </column>
+            <column name="goods_code" type="varchar(255)" remarks="商品代码">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="goods_name" type="varchar(255)" remarks="商品名称">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="price" type="varchar(255)" remarks="单价"/>
+            <column name="counting_unit" type="varchar(255)" remarks="计数单位"/>
+            <column name="is_deleted" type="boolean" remarks="是否删除"/>
+            <column name="create_time" type="timestamp" remarks="创建时间"/>
+            <column name="last_update_time" type="timestamp" remarks="最后修改时间"/>
+            <column name="create_by" type="bigint" remarks="创建人"/>
+            <column name="last_update_by" type="bigint" remarks="最后修改人"/>
+        </createTable>
+
+        <createTable tableName="tb_department_user" remarks="交易信息（账单）表">
+            <column name="id" type="bigint">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_Id"/>
+            </column>
+            <column name="type" type="bigint" remarks="交易方式(现金、支付宝、微信)"/>
+            <column name="money" type="float" remarks="交易金额"/>
+            <column name="operate_person" type="bigint" remarks="交易人员"/>
+            <column name="create_time" type="timestamp" remarks="交易时间"/>
+        </createTable>
+    </changeSet>
+
+    <!--初始化数据-->
+    <changeSet id="201805021000" author="jsq">
+        <sqlFile path="classpath:db/changelog/init.sql" encoding="utf-8"/>
+    </changeSet>
+
+</databaseChangeLog>
